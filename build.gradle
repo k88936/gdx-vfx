@@ -38,29 +38,3 @@ allprojects {
         maven { url "https://s01.oss.sonatype.org/content/repositories/releases/" }
     }
 }
-
-// As ugly as it gets, but Nexus Staging plugin must be applied to the root project only.
-apply plugin: 'io.codearte.nexus-staging'
-
-nexusStaging {
-    packageGroup = 'com.crashinvaders.vfx'
-    username = ossrhUsername
-    password = ossrhPassword
-}
-
-/** Checks if the property exists. If it doesn't - try to resolve it from the environment variable. */
-void resolveProperty(String propertyName, String envVariableName) {
-    if (!project.hasProperty(propertyName)) {
-        project.ext.propertyName = System.getenv(envVariableName)
-        if (!project.ext.propertyName) {
-            println "$propertyName is not defined"
-        } else {
-            println "$propertyName has been set from an environment variable."
-        }
-    }
-}
-// Setup Nexus repo and GitHub package repo credentials.
-// They usually defined in user global gradle.properties file
-// or as environment variables (Travis-CI).
-resolveProperty('ossrhUsername', 'OSSRH_USERNAME')
-resolveProperty('ossrhPassword', 'OSSRH_PASSWORD')

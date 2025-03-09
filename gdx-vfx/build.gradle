@@ -17,7 +17,6 @@
 subprojects {
     apply plugin: "java-library"
     apply plugin: 'maven-publish'
-    apply plugin: 'signing'
 
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -27,7 +26,7 @@ subprojects {
 
     ext {
         projectVersion = '0.5.4'
-        isSnapshot = false
+        isSnapshot = true
     }
 
     group = "com.crashinvaders.vfx"
@@ -61,11 +60,11 @@ subprojects {
         repositories {
             maven {
                 def urlRelease = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-                def urlSnapshot = 'https://oss.sonatype.org/content/repositories/snapshots/'
+                def urlSnapshot = 'https://maven.pkg.github.com/k88936/gdx-vfx'
                 url = isSnapshot ? urlSnapshot : urlRelease
                 credentials {
-                    username ossrhUsername
-                    password ossrhPassword
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
                 }
             }
         }
@@ -103,16 +102,6 @@ subprojects {
         }
     }
 
-    signing {
-        sign publishing.publications.mavenJava
-    }
-
-    // Simply using "required" in signing block doesn't work because taskGraph isn't ready yet.
-    gradle.taskGraph.whenReady {
-        tasks.withType(Sign) {
-            onlyIf { !isSnapshot }
-        }
-    }
 
     // Invokes publish task if the version is a snapshot.
     task publishSnapshot() {
@@ -178,8 +167,3 @@ void resolveProperty(String propertyName, String envVariableName) {
         }
     }
 }
-// Setup Nexus repo and GitHub package repo credentials.
-// They usually defined in user global gradle.properties file
-// or as environment variables (Travis-CI).
-resolveProperty('ossrhUsername', 'OSSRH_USERNAME')
-resolveProperty('ossrhPassword', 'OSSRH_PASSWORD')
