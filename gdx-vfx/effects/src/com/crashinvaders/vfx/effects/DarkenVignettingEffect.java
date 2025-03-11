@@ -31,7 +31,7 @@ public class DarkenVignettingEffect extends ShaderVfxEffect implements ChainVfxE
     public DarkenVignettingEffect(boolean controlSaturation) {
         super(VfxGLUtils.compileShader(
                 Gdx.files.classpath("gdxvfx/shaders/screenspace.vert"),
-                Gdx.files.classpath("gdxvfx/shaders/vignetting.frag"),
+                Gdx.files.classpath("gdxvfx/shaders/darken-vignetting.frag"),
                 (controlSaturation ? "#define CONTROL_SATURATION" : "")));
         this.saturationEnabled = controlSaturation;
         rebind();

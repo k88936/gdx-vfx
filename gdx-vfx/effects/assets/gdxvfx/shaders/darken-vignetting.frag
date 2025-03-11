@@ -34,7 +34,7 @@ void main() {
 	vec4 rgba = texture2D(u_texture0, v_texCoords);
 	vec3 rgb = rgba.rgb;
 	float d = distance(v_texCoords, vec2(u_centerX, u_centerY));
-	float factor = smoothstep(u_vignetteX, u_vignetteY, d);
+	float factor = smoothstep(u_vignetteX, u_vignetteY, d)*0.9;
 	rgb = rgb * factor + rgb * (1.0 - factor) * (1.0 - u_vignetteIntensity);
 
 #ifdef CONTROL_SATURATION
