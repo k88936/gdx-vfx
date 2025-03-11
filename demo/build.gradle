@@ -38,8 +38,8 @@ subprojects {
 configure(subprojects - project(':demo:android')) {
     apply plugin: 'java-library'
 
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 
     compileJava.options.incremental = true
     compileJava.options.encoding = 'UTF-8'
